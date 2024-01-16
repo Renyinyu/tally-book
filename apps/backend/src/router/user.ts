@@ -2,6 +2,7 @@ import { RequestHandler, Router } from 'express';
 import { validationResult } from 'express-validator'
 
 import { RegisterValidator } from '@/middlewares/validator/user.validation'
+import checkToken from '@/middlewares/checkToken';
 import UserModel from '@/models/user.model'
 import ResponseModel from '@/models/response.model';
 import { ERROR_CODE } from '@/enums/error';
@@ -40,6 +41,10 @@ router.post('/login', RegisterValidator(), (async (req, res) => {
     console.error(error)
   }
 }) as RequestHandler)
+
+router.post('/check', checkToken(), (async (req, res) => {
+  res.send('check token success')
+}))
 
 
 

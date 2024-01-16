@@ -85,8 +85,8 @@ class UserModel {
           return resolve(new ResponseModel(ERROR_CODE.BUSINESS, '账号密码错误', null))
         }
         // 一天后过期
-        const expired = Date.now() + 1000 * 60 * 60 * 24
-        jwt.sign({ id: userInfo.id, expired }, JWT_SECRET, { expiresIn: '1d' }, (err, encodded) => {
+        // const expired = Date.now() + 1000 * 60 * 60 * 24
+        jwt.sign({ id: userInfo.id }, JWT_SECRET, { expiresIn: '1d' }, (err, encodded) => {
           if (err) {
             console.log(err)
             return resolve(new ResponseModel(ERROR_CODE.BUSINESS, '登录失败', null))

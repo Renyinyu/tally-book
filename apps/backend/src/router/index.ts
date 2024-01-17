@@ -11,7 +11,7 @@ export default function registerRoutes(app: Application) {
   })
 
   app.use(((err, req, res, next) => {
-    console.error(err.stack)
+    console.error('global error capture:', err.stack)
     res.status(500).send('Something broke!')
   }) as ErrorRequestHandler)
   

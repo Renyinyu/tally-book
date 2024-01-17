@@ -1,9 +1,9 @@
 import { RequestHandler, Router } from 'express';
 import { validationResult } from 'express-validator'
 
-import { RegisterValidator } from '@/middlewares/validator/user.validation'
+import { RegisterValidator, ModifyUserinfoValidator } from '@/middlewares/validator/user.validation'
 import checkToken from '@/middlewares/checkToken';
-import UserModel from '@/models/user.model'
+import UserModel from '@/models/user'
 import ResponseModel from '@/models/response.model';
 import { ERROR_CODE } from '@/enums/error';
 
@@ -42,9 +42,23 @@ router.post('/login', RegisterValidator(), (async (req, res) => {
   }
 }) as RequestHandler)
 
-router.post('/check', checkToken(), (async (req, res) => {
-  res.send('check token success')
-}))
+router.get('/getUserinfo', checkToken(), async (req, res) => {
+  try {
+    const user = await userModel.getUserinfo(req.user)
+    res.send(new ResponseModel(ERROR_CODE.SUCCESS, 'ok', user))
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+router.post('/modifyUserinfo', checkToken(), ModifyUserinfoValidator(), (async (req, res) => {
+  try {
+    const result = await userModel.modifyUserinfo(req.body, req.user)
+    res.send(new ResponseModel(ERROR_CODE.SUCCESS, 'ok', result))
+  } catch (error) {
+    throw error;
+  }
+}) as RequestHandler)
 
 
 

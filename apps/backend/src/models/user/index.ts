@@ -6,7 +6,10 @@ import { prisma } from '@/utils/db'
 import { ERROR_CODE } from '@/enums/error'
 import { DEFAULT_AVATAR, JWT_SECRET } from '@/constants'
 
-import ResponseModel from './response.model'
+import ResponseModel from '../response.model'
+
+import type { IModifyUserDto, PartialIUser } from './dto'
+
 class UserModel {
   
   /**
@@ -31,14 +34,15 @@ class UserModel {
   }
 
   /**
-   * 通过用户名查询用户
+   * 通过用户名 或 uid查询用户
    * @param username 用户名
+   * @param uid 用户 ID
    * @returns 
    */
-  async getUserByName(username: string) {
+  async getUserByNameOrUid(username?: string, uid?: number) {
     try {
       const user = await prisma.user.findFirst({
-        where: { username }
+        where: { username, id: uid }
       })
       return user
     } catch (error) {
@@ -55,7 +59,7 @@ class UserModel {
    */
   async register(user: IRegisterBody) {
     try {
-      const _user = await this.getUserByName(user.username)
+      const _user = await this.getUserByNameOrUid(user.username)
       if (_user && _user.id) {
         return new ResponseModel(ERROR_CODE.BUSINESS, '用户名已存在', null)
       }
@@ -75,7 +79,7 @@ class UserModel {
   async login(user: IRegisterBody): Promise<ResponseModel> {
     return new Promise(async (resolve, reject) => {
       try {
-        const userInfo = await this.getUserByName(user.username)
+        const userInfo = await this.getUserByNameOrUid(user.username)
         // 校验用户是否存在
         if (!userInfo || !userInfo.id) {
           return resolve(new ResponseModel(ERROR_CODE.BUSINESS, '用户不存在', null))
@@ -97,6 +101,45 @@ class UserModel {
         resolve(new ResponseModel(ERROR_CODE.DATABASE, '登录失败', null))
       }
     })
+  }
+
+  /**
+   * 获取用户信息
+   * @param {IUserTokenPayload} user token
+   */
+  async getUserinfo(payload: IUserTokenPayload) {
+    const user = await this.getUserByNameOrUid(undefined, payload.id)
+    if (!user || !user.id) return null
+    return {
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
+      signature: user.signature || ''
+    }
+  }
+
+  /**
+   * 更新用户信息
+   * @param body {IModifyUserDto} 要修改的用户信息
+   * @param payload 
+   */
+  async modifyUserinfo(body: IModifyUserDto, payload: IUserTokenPayload) {
+    const keys = Object.keys(body).filter(key => key in body)
+    const user: Record<string, any> | null = await this.getUserinfo(payload)
+    if (!user || !user.id) return null
+    keys.forEach(key => {
+      user[key] = body[key]
+    })
+    const result = await prisma.user.update({
+      data: user,
+      where: { id: user.id }
+    })
+    return {
+      id: result.id,
+      username: result.username,
+      avatar: result.avatar,
+      signature: result.signature || ''
+    }
   }
 }
 

@@ -41,6 +41,9 @@ importers:
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
+      '@types/formidable':
+        specifier: ^3.4.5
+        version: 3.4.5
       '@types/jsonwebtoken':
         specifier: ^9.0.5
         version: 9.0.5
@@ -549,6 +552,12 @@ packages:
       '@types/express-serve-static-core': 4.17.41
       '@types/qs': 6.9.11
       '@types/serve-static': 1.15.5
+    dev: true
+
+  /@types/formidable@3.4.5:
+    resolution: {integrity: sha512-s7YPsNVfnsng5L8sKnG/Gbb2tiwwJTY1conOkJzTMRvJAlLFW1nEua+ADsJQu8N1c0oTHx9+d5nqg10WuT9gHQ==}
+    dependencies:
+      '@types/node': 20.11.0
     dev: true
 
   /@types/http-errors@2.0.4:

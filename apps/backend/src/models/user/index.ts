@@ -8,7 +8,7 @@ import { DEFAULT_AVATAR, JWT_SECRET } from '@/constants'
 
 import ResponseModel from '../response.model'
 
-import type { IModifyUserDto, PartialIUser } from './dto'
+import type { IModifyUserDto, ModifyUserKeys, PartialIUser } from './dto'
 
 class UserModel {
   
@@ -123,16 +123,23 @@ class UserModel {
    * @param body {IModifyUserDto} 要修改的用户信息
    * @param payload 
    */
-  async modifyUserinfo(body: IModifyUserDto, payload: IUserTokenPayload) {
+  async modifyUserinfo(body: IModifyUserDto<PartialIUser>, payload: IUserTokenPayload) {
     const keys = Object.keys(body).filter(key => key in body)
-    const user: Record<string, any> | null = await this.getUserinfo(payload)
-    if (!user || !user.id) return null
-    keys.forEach(key => {
-      user[key] = body[key]
-    })
+    
+    const userinfo = await this.getUserByNameOrUid(undefined, payload.id)
+    if (!userinfo || !userinfo.id) {
+      return null
+    }
+    if (userinfo) {
+      (keys as ModifyUserKeys[]).forEach((key: ModifyUserKeys) => {
+        if (key in userinfo && body[key]) {
+          userinfo[key] = body[key]!
+        }
+      })
+    }
     const result = await prisma.user.update({
-      data: user,
-      where: { id: user.id }
+      data: userinfo,
+      where: { id: userinfo.id }
     })
     return {
       id: result.id,

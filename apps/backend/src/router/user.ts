@@ -51,6 +51,17 @@ router.get('/getUserinfo', checkToken(), async (req, res) => {
   }
 })
 
+/**
+ * Modify user information
+ * @param {object} req.body - request body
+ * @param {string} req.body.username - new username
+ * @param {string} req.body.email - new email
+ * @param {string} req.body.phone - new phone number
+ * @param {string} req.body.gender - new gender (optional)
+ * @param {string} req.body.avatar - new avatar url (optional)
+ * @param {string} req.user - user object
+ * @returns {object} ResponseModel
+ */
 router.post('/modifyUserinfo', checkToken(), ModifyUserinfoValidator(), (async (req, res) => {
   try {
     const result = await userModel.modifyUserinfo(req.body, req.user)

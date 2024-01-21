@@ -16,7 +16,7 @@ router.post('/register', RegisterValidator(), (async (req, res) => {
     const valid = validationResult(req)
     if(valid.array().length) {
       const errorMsg = valid.array()[0].msg
-      return res.status(400).json(new ResponseModel(ERROR_CODE.PARAMS, errorMsg, null))
+      return res.status(ERROR_CODE.PARAMS).json(new ResponseModel(ERROR_CODE.PARAMS, errorMsg, null))
     }
     const body = req.body as IRegisterBody;
     const result = await userModel.register(body)

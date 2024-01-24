@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
+import '@/assets/styles/index.scss'
 
-import './vant-style'
+import '@/vant-style'
 
 import App from './App.vue'
 

@@ -4,6 +4,6 @@
   "endOfLine": "auto",
   "quotes": true,
   "trailingComma": "none",
-  "bracketSameLine": false,
+  "bracketSameLine": true,
   "vueIndentScriptAndStyle": false
 }

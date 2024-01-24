@@ -46,6 +46,7 @@ export default defineConfig({
           viewportUnit: "vw",
           fontViewportUnit: "vw",
           minPixelValue: 1,
+          exclude: [/node_modules/],
         }),
       ],
     }

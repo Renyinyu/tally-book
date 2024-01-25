@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { ref } from "vue"
-
 const active = ref("bill")
 const tabbarList = ref([
   { name: "bill", icon: "balance-list-o", title: "账单", to: "/tab/bill" },

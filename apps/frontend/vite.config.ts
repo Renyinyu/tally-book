@@ -7,6 +7,8 @@ import postcsspxtoviewport8plugin from 'postcss-px-to-viewport-8-plugin';
 import AutoImport from 'unplugin-auto-import/vite'
 import path from "node:path";
 
+const viewportWidth = 375
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,7 +17,7 @@ export default defineConfig({
      */
     vitePluginStyleVwLoader({
       unitToConvert: "px",
-      viewportWidth: 375,
+      viewportWidth: viewportWidth,
       unitPrecision: 5,
       viewportUnit: "vw",
       fontViewportUnit: "vw",
@@ -44,12 +46,12 @@ export default defineConfig({
       plugins: [
         postcsspxtoviewport8plugin({
           unitToConvert: 'px',
-          viewportWidth: file => {
-            let num = 1920;
-            if (file.indexOf('m_') !== -1) {
-              num = 375;
-            }
-            return num;
+          viewportWidth: () => {
+            // let num = 1920;
+            // if (file.indexOf('m_') !== -1) {
+            //   num = 750;
+            // }
+            return viewportWidth;
           },
           unitPrecision: 5,
           viewportUnit: "vw",
@@ -58,6 +60,14 @@ export default defineConfig({
           exclude: [/node_modules/],
         }),
       ],
+    }
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true
+      }
     }
   }
 });

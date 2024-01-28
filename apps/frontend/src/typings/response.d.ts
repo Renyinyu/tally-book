@@ -5,5 +5,5 @@ interface IResponse<T> {
 }
 
 interface IUserToken {
-  id: number;
+  token: string;
 }

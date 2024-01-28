@@ -5,6 +5,7 @@ const Bill = () => import('@/views/Bill/index.vue')
 const Statistics = () => import('@/views/Statistics/index.vue')
 const Mine = () => import('@/views/Mine/index.vue')
 const Login = () => import('@/views/Login/index.vue')
+const Register = () => import('@/views/Register/index.vue')
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -16,6 +17,10 @@ const router = createRouter({
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/register',
+      component: Register
     },
     {
       path: '/tab',

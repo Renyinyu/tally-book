@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import dayjs from "dayjs"
 
+import type { DatePickerColumnType } from "vant";
+
 const columns = [
   { text: "杭州", value: "Hangzhou" },
   { text: "宁波", value: "Ningbo" },
@@ -17,24 +19,24 @@ const typeText = computed(() => {
   return target ? target.text : '全部类型'
 })
 
-const columnsType = ["year", "month"]
+const columnsType: DatePickerColumnType[] = ["year", "month"]
 const minDate = new Date(2020, 0, 1)
 const maxDate = new Date(2025, 5, 1)
 
 const showDatePopup = ref(false)
-const currentDate = ref([dayjs().year(), dayjs().month() + 1])
+const currentDate = ref([dayjs().year().toString(), (dayjs().month() + 1).toString()])
 
 const currentDateTxt = computed(() => {
   const [year, month] = currentDate.value
-  return dayjs(new Date(year, month - 1)).format("YYYY-MM")
+  return dayjs(new Date(+year, +month - 1)).format("YYYY-MM")
 })
 
-const handleDateConfirm = ({ selectedValues }) => {
+const handleDateConfirm = ({ selectedValues }: { selectedValues: string[] }) => {
   currentDate.value = selectedValues
   showDatePopup.value = false
 }
 
-const handleTypeConfirm = ({selectedValues}) => {
+const handleTypeConfirm = ({selectedValues}: { selectedValues: string[] }) => {
   currentType.value = selectedValues
   showTypePopup.value = false
 }

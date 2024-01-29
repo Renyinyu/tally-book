@@ -18,10 +18,9 @@ interface ILoginDTO {
 const handleSubmit = async (values: ILoginDTO) => {
   try {
     const res = await login({ ...values })
-    console.log("res,", res)
     localStorage.setItem(TOKEN_KEY, res.data.token)
     router.replace("/tab/bill")
-  } catch (error) {
+  } catch (error: any) {
     showToast(error.message)
   }
 }

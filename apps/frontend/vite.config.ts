@@ -60,6 +60,11 @@ export default defineConfig({
           exclude: [/node_modules/],
         }),
       ],
+    },
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/assets/styles/variables.scss";@import "@/assets/styles/mixin.scss";`,
+      }
     }
   },
   server: {

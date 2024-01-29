@@ -23,23 +23,23 @@ const handleSubmit = async (values: IRegisterDTO) => {
   try {
     await register({ username: values.username, password: values.password})
     router.replace('/login')
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
     showToast(error.message)
   }
 
 }
 
-const getCaptchaCode = (value) => {
+const getCaptchaCode = (value: string) => {
   targetCode.value = value
   code.value = value
 }
 
-const checkValidCaptcha = (value) => {
+const checkValidCaptcha = (value: boolean) => {
   isCodeValid.value = value
 }
 
-const codeValidator = (val) => {
+const codeValidator = (val: string) => {
   return val === targetCode.value
 }
 

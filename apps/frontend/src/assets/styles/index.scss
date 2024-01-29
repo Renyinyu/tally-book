@@ -1,1 +1,10 @@
 @import './reset.scss';
+
+@font-face {
+  font-family: 'D-DIN-Bold';
+  src: url('../fonts/D-DIN-Bold.ttf');
+}
+
+.d-din-font {
+  font-family: D-DIN-Bold;
+}
